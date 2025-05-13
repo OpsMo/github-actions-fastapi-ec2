@@ -1,0 +1,44 @@
+name: CD
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+jobs:
+  deploy-staging:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to staging EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.STAGING_HOST }}
+        username: ec2-user
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker pull ${{ secrets.ECR_REPO_URI }}:latest
+          docker stop fastapi || true
+          docker rm fastapi || true
+          docker run -d --name fastapi -p 8000:8000 ${{ secrets.ECR_REPO_URI }}:latest
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment:
+      name: production   # GitHub Environments for manual approval
+
+    steps:
+    - name: Deploy to production EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.PRODUCTION_HOST }}
+        username: ec2-user
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker pull ${{ secrets.ECR_REPO_URI }}:latest
+          docker stop fastapi || true
+          docker rm fastapi || true
+          docker run -d --name fastapi -p 8000:8000 ${{ secrets.ECR_REPO_URI }}:latest
