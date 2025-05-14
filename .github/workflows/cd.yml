@@ -19,6 +19,7 @@ jobs:
         username: ec2-user
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_URI }}
           docker pull ${{ secrets.ECR_REPO_URI }}:latest
           docker stop fastapi || true
           docker rm fastapi || true
@@ -38,6 +39,7 @@ jobs:
         username: ec2-user
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_URI }}
           docker pull ${{ secrets.ECR_REPO_URI }}:latest
           docker stop fastapi || true
           docker rm fastapi || true
