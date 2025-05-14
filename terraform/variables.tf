@@ -5,7 +5,7 @@ variable "key_name" {
 
 variable "ec2_ami" {
   type    = string
-  default = "ami-0953476d60561c955"
+  default = "ami-085386e29e44dacd7"
   
 }
 
