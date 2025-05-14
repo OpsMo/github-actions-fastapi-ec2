@@ -35,7 +35,8 @@ resource "aws_instance" "fastapi_staging" {
               #!/bin/bash
               yum update -y
               amazon-linux-extras install docker -y
-              service docker start
+              systemctl start docker
+              systemctl enable docker
               usermod -a -G docker ec2-user
               docker run -d -p 8000:8000 ${aws_ecr_repository.fastapi-ecr.repository_url}:latest
               EOF
@@ -56,7 +57,8 @@ resource "aws_instance" "fastapi_prod" {
               #!/bin/bash
               yum update -y
               amazon-linux-extras install docker -y
-              service docker start
+              systemctl start docker
+              systemctl enable docker
               usermod -a -G docker ec2-user
               docker run -d -p 8000:8000 ${aws_ecr_repository.fastapi-ecr.repository_url}:latest
               EOF
