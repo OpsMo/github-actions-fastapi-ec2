@@ -1,7 +1,11 @@
+data "aws_vpc" "default" {
+    default = true
+  
+}
 resource "aws_security_group" "fastapi_ssh_access" {
   name        = "fastapi-ssh-access"
   description = "Allow SSH access -port 22"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     description = "SSH"
