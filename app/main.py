@@ -4,8 +4,11 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-        return {"version": "1.0",
-                "status": "running"}
+    return {
+        "env": os.environ.get("APP_ENV", "unknown"),
+        "version": "1",
+        "status": "running"
+    }
 
 
 # if __name__ == "__main__":

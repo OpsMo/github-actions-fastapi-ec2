@@ -47,7 +47,7 @@ resource "aws_instance" "fastapi_staging" {
               systemctl enable docker
               usermod -aG docker ec2-user
               aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${aws_ecr_repository.fastapi-ecr.repository_url}
-              docker run -d -p 8000:8000 ${aws_ecr_repository.fastapi-ecr.repository_url}:latest
+              docker run -d -p 8000:8000 -e APP_ENV=staging ${aws_ecr_repository.fastapi-ecr.repository_url}:latest
               EOF
 
   tags = {
@@ -71,7 +71,7 @@ resource "aws_instance" "fastapi_prod" {
               systemctl enable docker
               usermod -aG docker ec2-user
               aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${aws_ecr_repository.fastapi-ecr.repository_url}
-              docker run -d -p 8000:8000 ${aws_ecr_repository.fastapi-ecr.repository_url}:latest
+              docker run -d -p 8000:8000 -e APP_ENV=production ${aws_ecr_repository.fastapi-ecr.repository_url}:latest
               EOF
 
   tags = {
