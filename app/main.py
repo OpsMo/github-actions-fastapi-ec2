@@ -4,7 +4,7 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-        return {"version": "1",
+        return {"version": "1.0",
                 "status": "running"}
 
 
