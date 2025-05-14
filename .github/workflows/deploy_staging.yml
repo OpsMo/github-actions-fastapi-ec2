@@ -1,4 +1,4 @@
-name: CD
+name: Deploy to Staging
 
 on:
   workflow_run:
@@ -26,22 +26,22 @@ jobs:
           docker rm fastapi || true
           docker run -d --name fastapi -p 8000:8000 ${{ secrets.ECR_REPO_URI }}:latest
 
-  deploy-production:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    environment:
-      name: production
+  # deploy-production:
+  #   if: github.event_name == 'workflow_dispatch'
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: production
 
-    steps:
-    - name: Deploy to production EC2
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.PRODUCTION_HOST }}
-        username: ec2-user
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_URI }}
-          docker pull ${{ secrets.ECR_REPO_URI }}:latest
-          docker stop fastapi || true
-          docker rm fastapi || true
-          docker run -d --name fastapi -p 8000:8000 ${{ secrets.ECR_REPO_URI }}:latest
+  #   steps:
+  #   - name: Deploy to production EC2
+  #     uses: appleboy/ssh-action@v1.0.0
+  #     with:
+  #       host: ${{ secrets.PRODUCTION_HOST }}
+  #       username: ec2-user
+  #       key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #       script: |
+  #         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_URI }}
+  #         docker pull ${{ secrets.ECR_REPO_URI }}:latest
+  #         docker stop fastapi || true
+  #         docker rm fastapi || true
+  #         docker run -d --name fastapi -p 8000:8000 ${{ secrets.ECR_REPO_URI }}:latest
