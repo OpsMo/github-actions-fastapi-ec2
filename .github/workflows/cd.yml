@@ -5,6 +5,7 @@ on:
     workflows: ["CI"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   deploy-staging:
@@ -26,6 +27,7 @@ jobs:
           docker run -d --name fastapi -p 8000:8000 ${{ secrets.ECR_REPO_URI }}:latest
 
   deploy-production:
+    needs: deploy-staging
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment:
@@ -44,10 +46,3 @@ jobs:
           docker stop fastapi || true
           docker rm fastapi || true
           docker run -d --name fastapi -p 8000:8000 ${{ secrets.ECR_REPO_URI }}:latest
-
-workflow_dispatch:
-  inputs:
-    environment:
-      description: 'Environment to deploy to'
-      required: true
-      default: 'production'
