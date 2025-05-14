@@ -12,5 +12,5 @@ output "ecr_repo_url" {
 
 output "ecr_image_url" {
   value = aws_ecr_repository.fastapi-ecr.repository_url
-  
+
 }
