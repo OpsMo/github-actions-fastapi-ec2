@@ -10,21 +10,21 @@ This project demonstrates a **real-world continuous deployment setup** using Git
 .
 ├── .github/
 │   └── workflows/
-│       ├── deploy_staging.yml         # Auto deploys to staging on push to main
-│       └── deploy_production.yml      # Manual deploy to production from staging
+│       ├── deploy_staging.yml         
+│       └── deploy_production.yml       
 ├── app/
 │   ├── __init__.py
-│   └── main.py                        # FastAPI app with env-based output
+│   └── main.py                        
 ├── terraform/
-│   ├── ec2.tf                         # EC2 instances and user_data
-│   ├── ecr.tf                         # ECR repository
-│   ├── iam.tf                         # IAM roles for EC2 access
+│   ├── ec2.tf                         
+│   ├── ecr.tf                         
+│   ├── iam.tf                         
 │   ├── outputs.tf
 │   ├── provider.tf
 │   ├── variables.tf
 │   └── .terraform.lock.hcl
-├── Dockerfile                         # Uvicorn app image
-├── requirements.txt                  # FastAPI dependencies
+├── Dockerfile                       
+├── requirements.txt                 
 └── README.md
 ```
 
