@@ -39,7 +39,7 @@ This project demonstrates a **real-world continuous deployment setup** using Git
 * Dynamic environment injection (staging/production)
 * Clean production deployment triggered manually
 
----
+--- 
 
 ## API Output Examples
 
